@@ -37,10 +37,33 @@ void ssort(int * arr, int size)
   // call checkOrder to see whether this function correctly sorts the
   // elements
   
-  int i;  
+  int i;
+  int j;
+  int currMin; //smallest value in current pass
+  int temp; //temporary variable to store during swap
+  int minJ; //index location of smallest value in current pass
 
   for(i = 0; i < size; i++)
-  { 
+  {
+    currMin = arr[i];
+    for(j = i; j < size; j++)
+    {
+      if(arr[j] < currMin)
+      {
+        currMin = arr[j];
+        minJ = j;
+      }
+
+      else
+      {
+        minJ = i;
+      }
+    }
+
+    temp = arr[i];
+    arr[i] = currMin;
+    arr[minJ] = temp;
+  } 
 
   if (checkOrder(arr, size) == false)
     {
