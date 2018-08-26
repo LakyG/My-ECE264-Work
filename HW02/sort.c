@@ -36,6 +36,12 @@ void ssort(int * arr, int size)
   
   // call checkOrder to see whether this function correctly sorts the
   // elements
+  
+  int i;  
+
+  for(i = 0; i < size; i++)
+  { 
+
   if (checkOrder(arr, size) == false)
     {
       fprintf(stderr, "checkOrder returns false\n");
