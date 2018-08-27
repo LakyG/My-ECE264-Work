@@ -46,17 +46,13 @@ void ssort(int * arr, int size)
   for(i = 0; i < size; i++)
   {
     currMin = arr[i];
+		minJ = i;
     for(j = i; j < size; j++)
     {
       if(arr[j] < currMin)
       {
         currMin = arr[j];
         minJ = j;
-      }
-
-      else
-      {
-        minJ = i;
       }
     }
 
