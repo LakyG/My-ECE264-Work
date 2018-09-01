@@ -21,59 +21,81 @@ void eliminate(int n, int k)
     }
   // initialize all elements
 
-  int i = 0;
+  int i;
   int numElementsLeft = n; //the number of elements left in the array
-  int stepsToEnd = n; //the number of steps till the end of the array
-  int numSteps; //the number of steps to take forward in the array
+  int currIndex = 0; //the current index that has been counted until
+  int numSteps = 1; //the number of steps that have been taken forward in the array
+  int flag = 0; //flag for if the next value is a '-1'
+  //int forLimit; //the upper bound for the 'for' loop
   
   // counting to k,
   // mark the eliminated element
   // print the index of the marked element
   // repeat until only one element is unmarked
 
-  do
+  /*
+  if(n > k)
   {
+    forLimit = n;
+  }
+  else if(k >= n)
+  {
+    forLimit = k;
+  }
+  */
 
-    if(k > n && k % n != 0)
+  while(numElementsLeft > 1)
+  {
+    for(i = 0; i < k; i++)
     {
-      numSteps = k % n;
-    }
-    else if(k > n && k % n == 0)
-    {
-      numSteps = n;
-    }
-    else
-    {
-      numSteps = k;
-    }
+      flag = 0;
+      if(currIndex >= n)
+      {
+        //i = i % n;
+        currIndex = currIndex % n;
+      }
+      if(arr[currIndex] == -1)
+      {
+        //i++;
+        do
+        {
+          currIndex++;
+          if(currIndex >=n)
+          { 
+            currIndex = currIndex % n;
+          }
+        } while(currIndex < n && arr[currIndex] == -1);
 
-    while(arr[i + numSteps - 1] == 'X')
-    {
-      i++;
+        if(currIndex >= n)
+        {
+          currIndex = currIndex % n;
+          //flag = 1;
+        }
+      }
+      if(numSteps == k)
+      {
+        printf("%d\n", currIndex);
+        arr[currIndex] = -1;
+        numSteps = 0;
+        numElementsLeft--;
+      }
+      currIndex++;
+      if(flag == 0)
+      {
+        numSteps++;
+      }
     }
-
-    printf("%d\n", i + numSteps - 1);
-    arr[i + numSteps - 1] = 'X';
-    numElementsLeft--;
-    stepsToEnd = n - (i + numSteps);
-
-    if(stepsToEnd == 0)
-    {
-      i = 0;
-      stepsToEnd = n;
-    }
-    else
-    {
-      i = i + numSteps;
-    }
-		
-  } while(numElementsLeft > 0)
-
+  }
 
   // print the last one
 
-
-
+  for(i = 0; i < n; i++)
+  {
+    if(arr[i] != -1)
+    {
+      printf("%d\n", i);
+    }
+  }
 
   // release the memory of the array
   free (arr);
