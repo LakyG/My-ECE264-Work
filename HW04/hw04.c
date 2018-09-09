@@ -61,9 +61,18 @@ long long int
 distance (const DataPoint * datapoint, const Centroid * centroid)
 {
   // since this is for comparison only, there is no need to call sqrt
-  long long int sum = 0;	// must initialize to zero
+  long long int sum = 0;  // must initialize to zero
   // find Euclidean distance and then return 'sum' without calling sqrt
-	return sum;
+
+  int i;
+  long long int diff;
+  for(i = 0; i < datapoint -> dimension; i++)
+  {
+    //sum += pow(datapoint -> data[i] - centroid -> data[i], 2);
+    diff = datapoint -> data[i] - centroid -> data[i];
+    sum = sum + (diff * diff);
+  }
+  return sum;
 }
 
 #endif	
@@ -82,6 +91,24 @@ int closestCentroid (int kval, DataPoint * datapoint, Centroid * *centroids)
   // Please note that return value of distance is long long int, so initialize the values with the same type
   // go through each centroid and find the distance
   // keep track of minimum difference and index of centroid which has the smallest distance
+
+  int i;
+  long long int minDistance;
+  long long int currDistance;
+
+  minDistance = distance(datapoint, centroids[0]);
+  mindex = 0;
+
+  for(i = 1; i < kval; i++)
+  {
+    currDistance = distance(datapoint, centroids[i]);
+    if(currDistance < minDistance)
+    {
+      minDistance = currDistance;
+      mindex = i;
+    }
+  }
+
   return mindex;
 }
 
@@ -97,19 +124,92 @@ int closestCentroid (int kval, DataPoint * datapoint, Centroid * *centroids)
 // return the total distances of datapoints from their centroids
 void kmean (int kval, int nval, DataPoint * *datapoints, Centroid * *centroids)
 {
-		// reset all centroids
-		
-		// initialize each data point to a cluster between 0 and kval - 1
+  int i, j;
+  int clusterNum = 0;
 
-		// find the centroid for initial random assignment of datapoints
-		
-		// Now start the loop till convergence is met - (Please see README for understanding kmean algorithm convergence condition)
-		// 
-		// 1. for each data point, find the index of the centroid that is the closest
-		// 2. store that index in DataPoint's structure's cluster value.
-		// 3. reset all the centroids
-		// 4. go through each datapoint again and add this datapoint to its centroid using Centroid_addPoint function
-		// 5. find the new centroid for each cluster by calling Centroid_findCenter 
+  //reset all centroids
+  for(i = 0; i < kval; i++)
+  {
+    Centroid_reset(centroids[i]);
+  }
+
+  // initialize each data point to a cluster between 0 and kval - 1  
+  for(i = 0; i < nval; i++)
+  {
+    datapoints[i] -> cluster = rand() % kval;
+  }
+
+  // find the centroid for initial random assignment of datapoints
+  /*for(i = 0; i < nval; i++)
+  {
+    clusterNum = closestCentroid(kval, datapoints[i], centroids);
+    datapoints[i] -> cluster = clusterNum;
+  }*/
+
+  for(i = 0; i < nval; i++)
+  {
+    for(j = 0; j < kval; j++)
+    {
+      if(datapoints[i] -> cluster == j)
+      {
+        Centroid_addPoint(centroids[j], datapoints[i]);
+        j = kval;
+      }
+    }
+  }
+  for(i = 0; i < kval; i++)
+  {
+    Centroid_findCenter(centroids[i]);
+  }
+  // Now start the loop till convergence is met - (Please see README for understanding kmean algorithm convergence condition)
+  // 
+  // 1. for each data point, find the index of the centroid that is the closest
+  // 2. store that index in DataPoint's structure's cluster value.
+  // 3. reset all the centroids
+  // 4. go through each datapoint again and add this datapoint to its centroid using Centroid_addPoint function
+  // 5. find the new centroid for each cluster by calling Centroid_findCenter 
+
+  int diffExists = 0; //flag to see whether or not to continue the loop based on if there is atleast one difference
+  int oldCluster; //value of the old cluster for the datapoint
+
+  do
+  {
+    diffExists = 0; 
+    for(i = 0; i < nval; i++)
+    {
+      oldCluster = datapoints[i] -> cluster;
+      clusterNum = closestCentroid(kval, datapoints[i], centroids);
+      datapoints[i] -> cluster = clusterNum;
+
+      if(oldCluster != clusterNum)
+      {
+        diffExists = 1;
+      }
+    }
+
+    for(i = 0; i < kval; i++)
+    {
+      Centroid_reset(centroids[i]);
+    }
+
+    for(i = 0; i < nval; i++)
+    {
+      for(j = 0; j < kval; j++)
+      {
+        if(datapoints[i] -> cluster == j)
+        {
+          Centroid_addPoint(centroids[j], datapoints[i]);
+          j = kval;
+        }
+      }
+    }
+
+    for(i = 0; i < kval; i++)
+    {
+      Centroid_findCenter(centroids[i]);
+    }
+    //diffExists++;  
+  }while(diffExists /*< 2000*/== 1);
 }
  
 #endif	
