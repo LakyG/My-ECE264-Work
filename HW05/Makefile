@@ -22,7 +22,7 @@ testmemory: sort
 	$(VAL) ./sort inputs/test3 > output3
 #testing only input3 and output3
 
-testall: test1 test2 test3
+testall: test1 test2 test3 test4 test5 test6 test7 test8
 
 testadd: sort # sort here to ensure recompilation if necessary
 	test1
@@ -40,6 +40,26 @@ test2: sort
 test3: sort
 	./sort inputs/test3 > output3
 	diff output3 expected/expected3
+
+test4: sort
+	./sort inputs/test4 > output4
+	diff output4 expected/expected4
+
+test5: sort
+	./sort inputs/test5 > output5
+	diff output5 expected/expected5
+
+test6: sort
+	./sort inputs/test6 > output6
+	diff output6 expected/expected6
+
+test7: sort
+	./sort inputs/test7 > output7
+	diff output7 expected/expected7
+
+test8: sort
+	./sort inputs/test8 > output8
+	diff output8 expected/expected8
 
 clean: # remove all machine generated files
 	rm -f sort *.o output?
