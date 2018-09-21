@@ -36,9 +36,10 @@ int numberOfElements(char* in_file_name)
     //use float numelem = where / sizeof(Vector); to obtain the number of elements
   float numElem = where / sizeof(Vector);
     //return numelem; to send the number of elements back to main().
-  return numElem;
 
   fclose(fp);
+
+  return numElem;
 }
 #endif
 
