@@ -18,30 +18,27 @@ testmemory: hw10
 
 test1: hw10
 	./hw10 exampleImages/CondProb.bmp output/grayCondProb.bmp
-	xxd -b output/grayCondProb.bmp | less >> output1
-	xxd -b expectedImages/expectedCondProb.bmp | less >> expected1
+	xxd -b output/grayCondProb.bmp | less > output1
+	xxd -b expectedImages/expectedCondProb.bmp | less > expected1
 	diff output1 expected1
 
 test2: hw10
 	./hw10 exampleImages/RV.bmp output/grayRV.bmp
-	xxd -b output/grayRV.bmp >> output2
-	xxd -b expectedImages/expectedRV.bmp >> expected2
+	xxd -b output/grayRV.bmp | less > output2
+	xxd -b expectedImages/expectedRV.bmp | less > expected2
 	diff output2 expected2
-
 
 test3: hw10
 	./hw10 exampleImages/RV2.bmp output/grayRV2.bmp
-	xxd -b output/grayRV2.bmp >> output3
-	xxd -b expectedImages/expectedRV2.bmp >> expected3
+	xxd -b output/grayRV2.bmp | less > output3
+	xxd -b expectedImages/expectedRV2.bmp | less > expected3
 	diff output3 expected3
-
 
 test4: hw10
 	./hw10 exampleImages/RV2Small.bmp output/grayRV2Small.bmp
-	xxd -b output/grayRV2Small.bmp >> output4
-	xxd -b expectedImages/expectedRV2Small.bmp >> expected4
+	xxd -b output/grayRV2Small.bmp | less > output4
+	xxd -b expectedImages/expectedRV2Small.bmp | less > expected4
 	diff output4 expected4
-
 
 testall: test1 test2 test3 test4
 

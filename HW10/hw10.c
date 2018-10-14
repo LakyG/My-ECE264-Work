@@ -26,9 +26,10 @@ int main(int argc, char **argv){
   }
 
   // write the gray image to file
-  if(BMP_Write(argv[2], image) != 1)
+  if(BMP_Write(argv[2], grayImage) != 1)
   {
     BMP_Free(image);
+    BMP_Free(grayImage);
     return EXIT_FAILURE;
   }
 

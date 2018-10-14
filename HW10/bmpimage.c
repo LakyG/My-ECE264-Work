@@ -21,7 +21,7 @@ int Is_BMPHeader_Valid(BMPHeader* header, FILE *fptr) {
 	// Make sure this is a BMP file -  magic number
   if(header -> type != 0x4D42)
   {
-    printf("Incorrect magic number\n");
+    //printf("Incorrect magic number\n");
     return EXIT_FAILURE;
   }
   
@@ -33,27 +33,27 @@ int Is_BMPHeader_Valid(BMPHeader* header, FILE *fptr) {
 	// printf("header->offset %d\n",header->offset );  
   if(header -> offset != BMP_HEADER_SIZE)
   {
-    printf("Incorrect offset\n");
+    //printf("Incorrect offset\n");
     return EXIT_FAILURE;
   }
 
   // check the DIB header size == DIB_HEADER_SIZE
   if(header -> DIB_header_size != DIB_HEADER_SIZE)
   {
-    printf("Incorrect DIB header size\n");
+    //printf("Incorrect DIB header size\n");
     return EXIT_FAILURE;
   }
 	// Make sure there is only one image plane
   if(header -> planes != 1)
   {
-    printf("Incorrent number of planes\n");
+    //printf("Incorrent number of planes\n");
     return EXIT_FAILURE;
   }
 
 	// Make sure there is no compression
   if(header -> compression != 0)
   {
-    printf("Incorrect compression\n");
+    //printf("Incorrect compression\n");
     return EXIT_FAILURE;
   }
 
@@ -62,13 +62,13 @@ int Is_BMPHeader_Valid(BMPHeader* header, FILE *fptr) {
 	// ncolours and importantcolours should be 0
   if(header -> ncolours != 0 || header -> importantcolours != 0)
   {
-    printf("Incorrect colours\n");
+    //printf("Incorrect colours\n");
     return EXIT_FAILURE;
   }
 	// Make sure we are getting 24 bits per pixel
   if(header -> bits != 24)
   {
-    printf("Incorrect bits\n");
+    //printf("Incorrect bits\n");
     return EXIT_FAILURE;
   }
 	// only for this assignment
@@ -78,14 +78,14 @@ int Is_BMPHeader_Valid(BMPHeader* header, FILE *fptr) {
   calcImageSize = (header->bits * header->width * header->height) / 8;
   if(calcImageSize != header -> imagesize)
   {
-    printf("Incorrect image size\n");
+    //printf("Incorrect image size\n");
     return EXIT_FAILURE;
   }
   
   calcFileSize = calcImageSize + BMP_HEADER_SIZE;
   if(calcFileSize != header -> size)
   {
-    printf("Incorrect file size\n");
+    //printf("Incorrect file size\n");
     return EXIT_FAILURE;
   }
 		
@@ -160,6 +160,8 @@ BMPImage *BMP_Open(const char *filename) {
     BMP_Free(bmpImage);
     return NULL;
   }
+
+  fseek(fptr, BMP_HEADER_SIZE, SEEK_SET);
 
 	// read in the image data
   read_size = fread(bmpImage->data, sizeof(char), (bmpImage->header).imagesize, fptr);
