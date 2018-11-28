@@ -91,7 +91,7 @@ void FindMin(ListNode* head)
 	firstCheck = 0;
       }
 
-      if(currDist < smallestDist)
+      if(currDist <= smallestDist)
       {
         smallestDist = currDist;
 	node1 = i;
@@ -144,7 +144,8 @@ int FindDist(TreeNode* x, TreeNode* y)
 	// x->data and y->data
 	// DO NOT FIND SQUARE ROOT (we are working with int)
 	// return the distance
-  int dim = sizeof(x->data) / sizeof(x->data[0]); //length of array; dimension
+  //int dim = sizeof(x->data) / sizeof(x->data[0]); //length of array; dimension
+  int dim = x->dimension;
   int distance = 0;
   int i;
 
@@ -152,6 +153,8 @@ int FindDist(TreeNode* x, TreeNode* y)
   {
     distance += (y->data[i] - x->data[i]) * (y->data[i] - x->data[i]);
   }
+
+  //distance += (y->data - x->data) * (y->data - x->data);
 
   return distance;
 }
